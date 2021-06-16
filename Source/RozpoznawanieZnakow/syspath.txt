@@ -1,0 +1,1 @@
+['C:\\Python39\\python39.zip', 'C:\\Python39\\Lib', 'C:\\Python39\\DLLs', 'G:\\Program Files\\Epic Games\\UE_4.25\\Engine\\Binaries\\Win64', 'C:\\Python39', 'C:\\Python39\\lib\\site-packages']External Python program running...Hello World from Python program

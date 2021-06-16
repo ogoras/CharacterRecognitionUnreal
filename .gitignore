@@ -1,0 +1,14 @@
+/.vs
+/Binaries
+/DebugGame_Editor
+/DerivedDataCache
+/Intermediate
+/Plugins
+Saved/Autosaves
+Saved/Backup
+Saved/Collections
+Saved/Config
+Saved/Crashes
+Saved/Logs
+Saved/AutoScreenshot.png
+*.sln
