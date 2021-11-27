@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Misc/Paths.h"
 #include "DrawingBoard.h"
+#include "Misc/Paths.h"
 #include "Misc/DateTime.h"
 #include "fstream"
 #include <iomanip>
@@ -9,7 +9,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "PythonProcessor.h"
 
 const int characterCount = 115;
 const TCHAR polishLetters[] = {
@@ -52,14 +51,6 @@ FString ADrawingBoard::FinishContour()
 {
 	this->contourFile.close();
 	this->contourCount++;
-	/*PythonProcessor p;
-	int debug_int = p.calculate_int();
-	if (GEngine) {
-		auto msg = "Your result: " + debug_int;
-		FString message = TEXT("Your result: ") + FString::FromInt(debug_int);
-		UE_LOG(LogActor, Warning, TEXT("%s"), *message);
-	}
-	p.syspath(); */
 
 	this->contourCounts[this->nextNumber]++;
 	srand(time(NULL));
