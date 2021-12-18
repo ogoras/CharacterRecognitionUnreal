@@ -6,3 +6,4 @@
 /Plugins
 /Saved
 *.sln
+*_BuiltData.uasset
