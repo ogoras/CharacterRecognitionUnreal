@@ -23,7 +23,7 @@ const TCHAR polishMinisculeLetters[] = {
 ADrawingBoard::ADrawingBoard()
 {
 	//this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\session" + FDateTime::Now().ToString();
-	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\dataset";
+	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\subTEST";
 	this->contourCount = 0;
 	this->contourCounts = new int[characterCount]();
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -54,7 +54,7 @@ FString ADrawingBoard::FinishContour()
 
 	this->contourCounts[this->nextNumber]++;
 	srand(time(NULL));
-	int base_int = this->nextNumber = rand() % 3 + 112; //% characterCount;
+	int base_int = this->nextNumber = rand() % characterCount;
 	FString return_string;
 	if (base_int < 10)
 		return return_string.AppendChar(base_int + '0');
@@ -75,11 +75,11 @@ FString ADrawingBoard::FinishContour()
 	else if (base_int < 112)
 		return return_string.AppendChar(base_int - 108 + '{');
 	else if (base_int == 112)
-		return "space";
+		return "spacja";
 	else if (base_int == 113)
-		return "tab";
+		return "tabulator";
 	else
-		return "newline";
+		return "nowa linia (ENTER)";
 }
 
 void ADrawingBoard::EndStroke()
