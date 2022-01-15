@@ -26,5 +26,8 @@
 			"Name": "OpenXRExpansionPlugin",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor"
 	]
 }
