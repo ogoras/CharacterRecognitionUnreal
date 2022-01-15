@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DiscardContour();
 
+	UFUNCTION(BlueprintCallable)
+	void SetSubjectNumber(FString subjectNumber);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

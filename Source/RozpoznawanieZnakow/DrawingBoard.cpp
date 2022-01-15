@@ -26,8 +26,6 @@ ADrawingBoard::ADrawingBoard()
 	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\subTEST";
 	this->contourCount = 0;
 	this->contourCounts = new int[characterCount]();
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
 }
 
 void ADrawingBoard::BeginContour()
@@ -105,3 +103,8 @@ void ADrawingBoard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ADrawingBoard::SetSubjectNumber(FString subjectNumber)
+{
+	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\sub" + subjectNumber;
+	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory));
+}
