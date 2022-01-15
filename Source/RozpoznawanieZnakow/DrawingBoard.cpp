@@ -106,5 +106,5 @@ void ADrawingBoard::Tick(float DeltaTime)
 void ADrawingBoard::SetSubjectNumber(FString subjectNumber)
 {
 	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\sub" + subjectNumber;
-	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory));
+	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory)));
 }
