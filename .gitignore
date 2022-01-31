@@ -1,5 +1,6 @@
 /.vs
 /Binaries
+/Build
 /DebugGame_Editor
 /DerivedDataCache
 /Intermediate
@@ -7,3 +8,4 @@
 /Saved
 *.sln
 *_BuiltData.uasset
+/bin
