@@ -23,7 +23,10 @@ const TCHAR polishMinisculeLetters[] = {
 ADrawingBoard::ADrawingBoard()
 {
 	//this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\session" + FDateTime::Now().ToString();
+	_mkdir(TCHAR_TO_UTF8(*(FPaths::ProjectSavedDir() + "Contours")));
+	_mkdir(TCHAR_TO_UTF8(*(FPaths::ProjectSavedDir() + "Contours\\data")));
 	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\subTEST";
+	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory)));
 	this->contourCount = 0;
 	this->contourCounts = new int[characterCount]();
 }
