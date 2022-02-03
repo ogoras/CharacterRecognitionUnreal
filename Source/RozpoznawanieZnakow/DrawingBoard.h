@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Misc/Paths.h"
 #include "fstream"
+#include <vector>
+#include "./Point.h"
 #include "DrawingBoard.generated.h"
 
 UCLASS()
@@ -17,9 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ADrawingBoard();
 	
-	std::ofstream contourFile;
 	FString SaveDirectory;
-	FString ContourFilename;
 	//UPROPERTY(VisibleAnywhere)
 	//UStaticMeshComponent* VisualMesh;
 
@@ -38,8 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DiscardContour();
 
-	UFUNCTION(BlueprintCallable)
-	void SetSubjectNumber(FString subjectNumber);
+	/*UFUNCTION(BlueprintCallable)
+	void SetSubjectNumber(FString subjectNumber);*/
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,7 +50,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	int contourCount;
-	int nextNumber;
-	int* contourCounts;
+	std::vector<std::vector<Point>> currentContour;
+	std::vector<Point> currentStroke;
 };

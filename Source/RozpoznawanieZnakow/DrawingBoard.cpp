@@ -9,6 +9,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <vector>
 
 const int characterCount = 115;
 const TCHAR polishLetters[] = {
@@ -22,76 +23,41 @@ const TCHAR polishMinisculeLetters[] = {
 // Sets default values
 ADrawingBoard::ADrawingBoard()
 {
-	//this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\session" + FDateTime::Now().ToString();
-	_mkdir(TCHAR_TO_UTF8(*(FPaths::ProjectSavedDir() + "Contours")));
-	_mkdir(TCHAR_TO_UTF8(*(FPaths::ProjectSavedDir() + "Contours\\data")));
-	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\subTEST";
-	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory)));
-	this->contourCount = 0;
-	this->contourCounts = new int[characterCount]();
+	this->SaveDirectory = FPaths::ProjectSavedDir() + "RecognitionData";
+	this->currentStroke = *(new std::vector<Point>);
 }
 
 void ADrawingBoard::BeginContour()
 {
-	//if (this->contourCount == 0)
-	//	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory)));
-	if (this->contourCounts[this->nextNumber] == 0)
-		_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory + "\\" + FString::FromInt(this->nextNumber))));
-	this->ContourFilename = this->SaveDirectory + "\\" + FString::FromInt(this->nextNumber) + "\\contour" + FDateTime::Now().ToString() + ".txt";
-	if (contourCount != 0)
-		this->contourFile.open(std::string(TCHAR_TO_UTF8(*(this->ContourFilename))));
-	this->contourFile << std::setprecision(10);
+	this->currentContour.clear();
 }
 
 void ADrawingBoard::AddDot(FVector2D offset)
 {
-	this->contourFile << offset.X << " " << offset.Y << "\n";
+	this->currentStroke.push_back(*(new Point(offset.X, offset.Y)));
 }
 
 FString ADrawingBoard::FinishContour()
 {
-	this->contourFile.close();
-	this->contourCount++;
+	EndStroke();
+	//send data from this->currentContour to web service
 
-	this->contourCounts[this->nextNumber]++;
-	srand(time(NULL));
-	int base_int = this->nextNumber = rand() % characterCount;
-	FString return_string;
-	if (base_int < 10)
-		return return_string.AppendChar(base_int + '0');
-	else if (base_int < 36)
-		return return_string.AppendChar(base_int - 10 + 'A');
-	else if (base_int < 45)
-		return return_string.AppendChar(polishLetters[base_int - 36]);
-	else if (base_int < 71)
-		return return_string.AppendChar(base_int - 45 + 'a');
-	else if (base_int < 80)
-		return return_string.AppendChar(polishMinisculeLetters[base_int - 71]);
-	else if (base_int < 95)
-		return return_string.AppendChar(base_int - 80 + '!');
-	else if (base_int < 102)
-		return return_string.AppendChar(base_int - 95 + ':');
-	else if (base_int < 108)
-		return return_string.AppendChar(base_int - 102 + '[');
-	else if (base_int < 112)
-		return return_string.AppendChar(base_int - 108 + '{');
-	else if (base_int == 112)
-		return "spacja";
-	else if (base_int == 113)
-		return "tabulator";
-	else
-		return "nowa linia (ENTER)";
+	this->currentContour.clear();
+	this->currentStroke = *(new std::vector<Point>);
+
+	return "test";
 }
 
 void ADrawingBoard::EndStroke()
 {
-	this->contourFile << "\n";
+	this->currentContour.push_back(this->currentStroke);
+	this->currentStroke = *(new std::vector<Point>);
 }
 
 void ADrawingBoard::DiscardContour()
 {
-	this->contourFile.close();
-	remove(TCHAR_TO_UTF8(*this->ContourFilename));
+	this->currentContour.clear();
+	this->currentStroke = *(new std::vector<Point>);
 }
 
 // Called when the game starts or when spawned
@@ -104,10 +70,4 @@ void ADrawingBoard::BeginPlay()
 void ADrawingBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ADrawingBoard::SetSubjectNumber(FString subjectNumber)
-{
-	this->SaveDirectory = FPaths::ProjectSavedDir() + "Contours\\data\\sub" + subjectNumber;
-	_mkdir(TCHAR_TO_UTF8(*(this->SaveDirectory)));
 }
