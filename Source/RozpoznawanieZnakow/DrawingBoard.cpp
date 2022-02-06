@@ -29,7 +29,7 @@ ADrawingBoard::ADrawingBoard()
 
 void ADrawingBoard::BeginContour()
 {
-	this->currentContour.clear();
+	
 }
 
 void ADrawingBoard::AddDot(FVector2D offset)
@@ -43,7 +43,6 @@ FString ADrawingBoard::FinishContour()
 	//send data from this->currentContour to web service
 
 	this->currentContour.clear();
-	this->currentStroke = *(new std::vector<Point>);
 
 	return "test";
 }
@@ -56,6 +55,7 @@ void ADrawingBoard::EndStroke()
 
 void ADrawingBoard::DiscardContour()
 {
+	this->currentContour.push_back(this->currentStroke);
 	this->currentContour.clear();
 	this->currentStroke = *(new std::vector<Point>);
 }
