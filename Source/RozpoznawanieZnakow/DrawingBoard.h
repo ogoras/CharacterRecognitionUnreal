@@ -8,6 +8,9 @@
 #include "fstream"
 #include <vector>
 #include "./Point.h"
+#include "Runtime/Online/HTTP/Public/HttpModule.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
 #include "DrawingBoard.generated.h"
 
 UCLASS()
@@ -52,4 +55,7 @@ public:
 private:
 	std::vector<std::vector<Point>> currentContour;
 	std::vector<Point> currentStroke;
+
+	FString detectChar(std::vector<std::vector<Point>> vec);
+	void detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 };

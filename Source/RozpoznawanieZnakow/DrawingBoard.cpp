@@ -1,15 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DrawingBoard.h"
-#include "Misc/Paths.h"
 #include "Misc/DateTime.h"
-#include "fstream"
 #include <iomanip>
 #include <direct.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <vector>
 
 const int characterCount = 115;
 const TCHAR polishLetters[] = {
@@ -40,11 +37,11 @@ void ADrawingBoard::AddDot(FVector2D offset)
 FString ADrawingBoard::FinishContour()
 {
 	EndStroke();
-	//send data from this->currentContour to web service
+	FString detectedChar = detectChar(this->currentContour);
 
 	this->currentContour.clear();
 
-	return "test";
+	return detectedChar;
 }
 
 void ADrawingBoard::EndStroke()
@@ -70,4 +67,39 @@ void ADrawingBoard::BeginPlay()
 void ADrawingBoard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+FString ADrawingBoard::detectChar(std::vector<std::vector<Point>>)
+{
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+	FString msg = "test2";
+	JsonObject->SetStringField(TEXT("some_string_field"), *FString::Printf(TEXT("%s"), *msg));
+	FString OutputString;
+	TSharedRef<TJsonWriter<TCHAR>> JsonWriter = TJsonWriterFactory<>::Create(&OutputString);
+	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), JsonWriter);
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
+	HttpRequest->SetVerb("POST");
+	HttpRequest->SetHeader("Content-Type", "application/json");
+	HttpRequest->SetURL(TEXT("localhost:8000"));
+	HttpRequest->SetContentAsString(OutputString);
+	HttpRequest->OnProcessRequestComplete().BindUObject(this, &ADrawingBoard::detectCharCompleted);
+	HttpRequest->ProcessRequest();
+
+	return "test";
+}
+
+void ADrawingBoard::detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+{
+	if (bWasSuccessful && Response->GetContentType() == "application/json")
+	{
+		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+		TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(Response->GetContentAsString());
+		FJsonSerializer::Deserialize(JsonReader, JsonObject);
+		//SomeOtherVariable = JsonObject->GetStringField("some_response_field");
+
+	}
+	else
+	{
+		// Handle error here
+	}
 }
