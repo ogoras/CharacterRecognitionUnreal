@@ -58,4 +58,5 @@ private:
 
 	FString detectChar(std::vector<std::vector<Point>> vec);
 	void detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	TSharedPtr<FJsonObject> createNewJsonPoint(Point p);
 };

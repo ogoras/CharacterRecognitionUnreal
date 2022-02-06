@@ -76,11 +76,17 @@ FString ADrawingBoard::detectChar(std::vector<std::vector<Point>>)
 	JsonObject->SetStringField(TEXT("some_string_field"), *FString::Printf(TEXT("%s"), *msg));
 
 	TArray<TSharedPtr<FJsonValue>> arr1;
-	arr1.Add(MakeShareable(new FJsonValueNumber(0)));
-	arr1.Add(MakeShareable(new FJsonValueNumber(1)));
+	TSharedPtr<FJsonObject> point11 = createNewJsonPoint(*(new Point(0.11, 0.22)));
+	arr1.Add(MakeShareable(new FJsonValueObject(point11)));
+	TSharedPtr<FJsonObject> point12 = createNewJsonPoint(*(new Point(0.11, 0.11)));
+	arr1.Add(MakeShareable(new FJsonValueObject(point12)));
+
 	TArray<TSharedPtr<FJsonValue>> arr2;
-	arr2.Add(MakeShareable(new FJsonValueNumber(0)));
-	arr2.Add(MakeShareable(new FJsonValueNumber(2.5)));
+	TSharedPtr<FJsonObject> point21 = createNewJsonPoint(*(new Point(0.01, 0.02)));
+	arr2.Add(MakeShareable(new FJsonValueObject(point21)));
+	TSharedPtr<FJsonObject> point22 = createNewJsonPoint(*(new Point(0.22, 0.22)));
+	arr2.Add(MakeShareable(new FJsonValueObject(point22)));
+
 	TArray<TSharedPtr<FJsonValue>> arr;
 	arr.Add(MakeShareable(new FJsonValueArray(arr1)));
 	arr.Add(MakeShareable(new FJsonValueArray(arr2)));
@@ -114,4 +120,12 @@ void ADrawingBoard::detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePt
 	{
 		// Handle error here
 	}
+}
+
+TSharedPtr<FJsonObject> ADrawingBoard::createNewJsonPoint(Point p)
+{
+	TSharedPtr<FJsonObject> obj = MakeShareable(new FJsonObject());
+	obj->SetNumberField(TEXT("x"), p.x);
+	obj->SetNumberField(TEXT("y"), p.y);
+	return obj;
 }
