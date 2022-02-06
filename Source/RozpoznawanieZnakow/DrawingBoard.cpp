@@ -100,13 +100,10 @@ FString ADrawingBoard::detectChar(std::vector<std::vector<Point>> vec)
 
 void ADrawingBoard::detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 {
-	if (bWasSuccessful && Response->GetContentType() == "application/json")
+	if (bWasSuccessful)
 	{
-		TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
-		TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(Response->GetContentAsString());
-		FJsonSerializer::Deserialize(JsonReader, JsonObject);
+		FString s = Response->GetContentAsString();
 		//SomeOtherVariable = JsonObject->GetStringField("some_response_field");
-
 	}
 	else
 	{
