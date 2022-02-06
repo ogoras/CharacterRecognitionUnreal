@@ -74,6 +74,12 @@ FString ADrawingBoard::detectChar(std::vector<std::vector<Point>>)
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
 	FString msg = "test2";
 	JsonObject->SetStringField(TEXT("some_string_field"), *FString::Printf(TEXT("%s"), *msg));
+
+	TArray<TSharedPtr<FJsonValue>> arr;
+	arr.Add(MakeShareable(new FJsonValueNumber(0)));
+	arr.Add(MakeShareable(new FJsonValueNumber(1)));
+	JsonObject->SetArrayField(TEXT("data"), arr);
+
 	FString OutputString;
 	TSharedRef<TJsonWriter<TCHAR>> JsonWriter = TJsonWriterFactory<>::Create(&OutputString);
 	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), JsonWriter);
