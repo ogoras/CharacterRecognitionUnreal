@@ -69,27 +69,19 @@ void ADrawingBoard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-FString ADrawingBoard::detectChar(std::vector<std::vector<Point>>)
+FString ADrawingBoard::detectChar(std::vector<std::vector<Point>> vec)
 {
 	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
-	FString msg = "test2";
-	JsonObject->SetStringField(TEXT("some_string_field"), *FString::Printf(TEXT("%s"), *msg));
-
-	TArray<TSharedPtr<FJsonValue>> arr1;
-	TSharedPtr<FJsonObject> point11 = createNewJsonPoint(*(new Point(0.11, 0.22)));
-	arr1.Add(MakeShareable(new FJsonValueObject(point11)));
-	TSharedPtr<FJsonObject> point12 = createNewJsonPoint(*(new Point(0.11, 0.11)));
-	arr1.Add(MakeShareable(new FJsonValueObject(point12)));
-
-	TArray<TSharedPtr<FJsonValue>> arr2;
-	TSharedPtr<FJsonObject> point21 = createNewJsonPoint(*(new Point(0.01, 0.02)));
-	arr2.Add(MakeShareable(new FJsonValueObject(point21)));
-	TSharedPtr<FJsonObject> point22 = createNewJsonPoint(*(new Point(0.22, 0.22)));
-	arr2.Add(MakeShareable(new FJsonValueObject(point22)));
 
 	TArray<TSharedPtr<FJsonValue>> arr;
-	arr.Add(MakeShareable(new FJsonValueArray(arr1)));
-	arr.Add(MakeShareable(new FJsonValueArray(arr2)));
+	for (std::vector<Point> stroke : vec) {
+		TArray<TSharedPtr<FJsonValue>> subarr;
+		for (Point p : stroke) {
+			TSharedPtr<FJsonObject> point = createNewJsonPoint(p);
+			subarr.Add(MakeShareable(new FJsonValueObject(point)));
+		}
+		arr.Add(MakeShareable(new FJsonValueArray(subarr)));
+	}
 	JsonObject->SetArrayField(TEXT("data"), arr);
 
 	FString OutputString;
