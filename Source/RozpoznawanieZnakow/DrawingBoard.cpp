@@ -103,6 +103,7 @@ void ADrawingBoard::detectCharCompleted(FHttpRequestPtr Request, FHttpResponsePt
 	if (bWasSuccessful)
 	{
 		FString s = Response->GetContentAsString();
+		CharacterRecognized(s);
 		//SomeOtherVariable = JsonObject->GetStringField("some_response_field");
 	}
 	else
