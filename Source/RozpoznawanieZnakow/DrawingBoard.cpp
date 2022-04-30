@@ -90,7 +90,7 @@ FString ADrawingBoard::detectChar(std::vector<std::vector<Point>> vec)
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("POST");
 	HttpRequest->SetHeader("Content-Type", "application/json");
-	HttpRequest->SetURL(TEXT("localhost:8000"));
+	HttpRequest->SetURL(TEXT("http://goope-gpu-5.iem.pw.edu.pl:30000"));
 	HttpRequest->SetContentAsString(OutputString);
 	HttpRequest->OnProcessRequestComplete().BindUObject(this, &ADrawingBoard::detectCharCompleted);
 	HttpRequest->ProcessRequest();
